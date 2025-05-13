@@ -87,7 +87,7 @@ spec:
               port:
                 number: 80
 ```
-6. Создаем файл pvc.yaml
+7. Создаем файл pvc.yaml
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -101,7 +101,7 @@ spec:
     requests:
       storage: 10Gi				
 ```	  
-7. Создаем файл statefulset.yaml
+8. Создаем файл statefulset.yaml
 ```
 apiVersion: apps/v1
 kind: StatefulSet
@@ -135,7 +135,7 @@ spec:
         persistentVolumeClaim:
           claimName: postgres-pvc
 ```
-8. Создаем файл svc-app.yaml
+9. Создаем файл svc-app.yaml
 ```
 apiVersion: v1
 kind: Service
@@ -150,7 +150,7 @@ spec:
       port: 80
       targetPort: 3000
 ```	  
-9. Создаем файл svc-postgres.yaml
+10. Создаем файл svc-postgres.yaml
 ```
 apiVersion: v1
 kind: Service
@@ -165,7 +165,7 @@ spec:
       port: 5432
       targetPort: 5432 
 ```	  
-10. Запускаем сервис:
+11. Запускаем сервис:
 ```
 kubectl apply -f ./k8s_manifests
 ```
