@@ -83,7 +83,7 @@ spec:
         configMap:
           name: zouzoublique-config	
 ```
-**8. Создаем файл `ingress.yaml`** (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
+**8. Создаем файл `ingress.yaml`** (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имени вне кластера)
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -104,7 +104,7 @@ spec:
                 number: 80
 ```
 **9. Создаем файл `pvc.yaml`**
-(Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
+(Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql)
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
