@@ -13,11 +13,12 @@
 ```
 mkdir k8s_manifest
 ```
-**3. Переходим в каталог k8_manifest, все работы будем производить из этого каталога.**
+**3. Переходим в каталог `k8_manifest`, все работы будем производить из этого каталога.**
 ```
 cd mkdir k8s_manifest
 ```
-**4. Создаем файл configmap-postgresql.yaml** (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
+**4. Создаем файл `configmap-postgresql.yaml`** 
+(Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -29,7 +30,8 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
 ```  
-**5. Создаем файл configmap-zouzoublique-config.yaml (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)**
+**5. Создаем файл `configmap-zouzoublique-config.yaml`** 
+(Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)
 ```
 apiVersion: v1
 kind: ConfigMap
