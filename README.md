@@ -118,7 +118,7 @@ spec:
     requests:
       storage: 10Gi				
 ```	  
-**10. Создаем файл `statefulset.yaml`** (ресурс StatefulSet для работы postgresql и сохранения состояния данных)
+**10. Создаем файл `statefulset.yaml`** (контролллер StatefulSet для работы postgresql и сохранения состояния данных)
 ```
 apiVersion: apps/v1
 kind: StatefulSet
