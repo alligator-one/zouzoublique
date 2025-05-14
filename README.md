@@ -17,7 +17,7 @@ mkdir k8s_manifest
 ```
 cd mkdir k8s_manifest
 ```
-**4. Создадим файл namespace.yaml**
+**4. Создадим файл `namespace.yaml`**
 (манифест создания неймспейса)
 ```
 apiVersion: v1
