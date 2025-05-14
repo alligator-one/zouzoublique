@@ -17,7 +17,7 @@ mkdir k8s_manifest
 ```
 cd mkdir k8s_manifest
 ```
-3. Создаем файл configmap-postgresql.yaml (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
+4. Создаем файл configmap-postgresql.yaml (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -29,7 +29,7 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
 ```  
-4. Создаем файл configmap-zouzoublique-config.yaml (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)
+5. Создаем файл configmap-zouzoublique-config.yaml (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -42,7 +42,7 @@ data:
     database_url = postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
     port = 3000
 ```	
-5. Создаем файл deployment.yaml (Deployment для нашего сервиса zouzoublique)
+6. Создаем файл deployment.yaml (Deployment для нашего сервиса zouzoublique)
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -73,7 +73,7 @@ spec:
         configMap:
           name: zouzoublique-config	
 ```
-6. Создаем файл ingress.yaml (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
+7. Создаем файл ingress.yaml (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -93,7 +93,7 @@ spec:
               port:
                 number: 80
 ```
-7. Создаем файл pvc.yaml (Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
+8. Создаем файл pvc.yaml (Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
 
 ```
 apiVersion: v1
@@ -108,7 +108,7 @@ spec:
     requests:
       storage: 10Gi				
 ```	  
-8. Создаем файл statefulset.yaml (ресурса StatefulSet для работы postgresql и сохранения состояния данных)
+9. Создаем файл statefulset.yaml (ресурса StatefulSet для работы postgresql и сохранения состояния данных)
 ```
 apiVersion: apps/v1
 kind: StatefulSet
@@ -142,7 +142,7 @@ spec:
         persistentVolumeClaim:
           claimName: postgres-pvc
 ```
-9. Создаем файл svc-app.yaml (сервис для проксирования запросов до подов zouzoublique)
+10. Создаем файл svc-app.yaml (сервис для проксирования запросов до подов zouzoublique)
 ```
 apiVersion: v1
 kind: Service
@@ -157,7 +157,7 @@ spec:
       port: 80
       targetPort: 3000
 ```	  
-10. Создаем файл svc-postgres.yaml (сервис для проксирования запросов до подов postgresql)
+11. Создаем файл svc-postgres.yaml (сервис для проксирования запросов до подов postgresql)
 ```
 apiVersion: v1
 kind: Service
@@ -194,4 +194,41 @@ kubectl config get-contexts
 ```
 minikube addons enable ingress
 ```
-14. 
+14. Установим все необходимые ресурсы и сервисы
+```
+kubectl apply -f ./k8s_manifests
+```
+15. Для того, чтобы dns имя было связано с нужным ip адресом необходимо прописать в файле `/etc/hosts` следующее:
+``` bash
+<IP адрес развернутого minikube> zouzoublique.example.com
+```
+**IP адрес развернутого minikube** можно узнать, прописав команду в терминале
+```
+minikube ip
+```
+16. Проверим работоспособность сервиса
+
+16.1. Убедимся, что сервис доступен
+```
+curl -X GET http://zouzoublique.example.com/healthz
+```
+16.2. Убедимся, что мы можем получить пустой список зюзюбликов
+```
+curl -X GET http://zouzoublique.example.com/v1/zouzoubliques
+```
+. POST /v1/zouzoubliques 
+16.3. Убедимся, что мы можем добавить зюзюблика
+```
+curl -X POST http://zouzoublique.example.com/v1/zouzoubliques \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "name": "Зюзюблик-3000",
+    "type": 42
+  }'
+```
+16.4. Проверим, что зузяблик добавился
+```
+curl -X GET http://zouzoublique.example.com/v1/zouzoubliques
+```
+
