@@ -221,7 +221,7 @@ kubectl apply -f ./k8s_manifests
 ``` 
 <IP адрес развернутого minikube> zouzoublique.example.com
 ```
-IP адрес развернутого minikube можно узнать, прописав команду в терминале
+IP адрес развернутого minikube можно узнать при помощи команды
 ```
 minikube ip
 ```
