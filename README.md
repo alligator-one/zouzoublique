@@ -7,17 +7,17 @@
 - Установленный kubectl
 
 ## Порядок установки
-1. Открыть терминал с оболочкой `bash`
+**1. Открыть терминал с оболочкой `bash`**
 
-2. Создаем каталог k8s_manifest
+**2. Создаем каталог k8s_manifest**
 ```
 mkdir k8s_manifest
 ```
-3. Переходим в каталог k8_manifest, все работы будем производить из этого каталога.
+**3. Переходим в каталог k8_manifest, все работы будем производить из этого каталога.**
 ```
 cd mkdir k8s_manifest
 ```
-4. Создаем файл configmap-postgresql.yaml (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
+**4. Создаем файл configmap-postgresql.yaml (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)**
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -29,7 +29,7 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
 ```  
-5. Создаем файл configmap-zouzoublique-config.yaml (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)
+**5. Создаем файл configmap-zouzoublique-config.yaml (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)**
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -42,7 +42,7 @@ data:
     database_url = postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
     port = 3000
 ```	
-6. Создаем файл deployment.yaml (Deployment для нашего сервиса zouzoublique)
+**6. Создаем файл deployment.yaml (Deployment для нашего сервиса zouzoublique)**
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -73,7 +73,7 @@ spec:
         configMap:
           name: zouzoublique-config	
 ```
-7. Создаем файл ingress.yaml (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
+**7. Создаем файл ingress.yaml** (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -93,8 +93,8 @@ spec:
               port:
                 number: 80
 ```
-8. Создаем файл pvc.yaml (Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
-
+**8. Создаем файл pvc.yaml**
+(Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -202,7 +202,7 @@ kubectl apply -f ./k8s_manifests
 ``` bash
 <IP адрес развернутого minikube> zouzoublique.example.com
 ```
-**IP адрес развернутого minikube** можно узнать, прописав команду в терминале
+IP адрес развернутого minikube можно узнать, прописав команду в терминале
 ```
 minikube ip
 ```
