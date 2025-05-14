@@ -17,7 +17,15 @@ mkdir k8s_manifest
 ```
 cd mkdir k8s_manifest
 ```
-**4. Создаем файл `configmap-postgresql.yaml`** 
+**4. Создадим файл namespace.yaml**
+(манифест создания неймспейса)
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zouzoublique
+```
+**5. Создаем файл `configmap-postgresql.yaml`** 
 (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
 ```
 apiVersion: v1
@@ -30,7 +38,7 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
 ```  
-**5. Создаем файл `configmap-zouzoublique-config.yaml`** 
+**6. Создаем файл `configmap-zouzoublique-config.yaml`** 
 (Конфигмапа, нужная для сервиса zouzoublique с данными для подлключения к postgresql)
 ```
 apiVersion: v1
@@ -44,7 +52,7 @@ data:
     database_url = postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
     port = 3000
 ```	
-**6. `Создаем файл deployment.yaml`** (Deployment для нашего сервиса zouzoublique)
+**7. Создаем файл `deployment.yaml`** (Deployment для нашего сервиса zouzoublique)
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -75,7 +83,7 @@ spec:
         configMap:
           name: zouzoublique-config	
 ```
-**7. Создаем файл `ingress.yaml`** (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
+**8. Создаем файл `ingress.yaml`** (ресурс, позволяющий при наличии ingress-controller достучаться до сервиса по указанному DNS имения вне кластера)
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -95,7 +103,7 @@ spec:
               port:
                 number: 80
 ```
-**8. Создаем файл `pvc.yaml`**
+**9. Создаем файл `pvc.yaml`**
 (Ресурс PersistentVolumeClaim, позволяющий создать постоянное хранилище данных на хосте. Необходим для хранения данных postgresql
 ```
 apiVersion: v1
@@ -110,7 +118,7 @@ spec:
     requests:
       storage: 10Gi				
 ```	  
-**9. Создаем файл `statefulset.yaml`** (ресурс StatefulSet для работы postgresql и сохранения состояния данных)
+**10. Создаем файл `statefulset.yaml`** (ресурс StatefulSet для работы postgresql и сохранения состояния данных)
 ```
 apiVersion: apps/v1
 kind: StatefulSet
@@ -144,7 +152,7 @@ spec:
         persistentVolumeClaim:
           claimName: postgres-pvc
 ```
-**10. Создаем файл `svc-app.yaml`** (сервис для проксирования запросов до подов zouzoublique)
+**11. Создаем файл `svc-app.yaml`** (сервис для проксирования запросов до подов zouzoublique)
 ```
 apiVersion: v1
 kind: Service
@@ -159,7 +167,7 @@ spec:
       port: 80
       targetPort: 3000
 ```	  
-**11. Создаем файл `svc-postgres.yaml`** (сервис для проксирования запросов до подов postgresql)
+**12. Создаем файл `svc-postgres.yaml`** (сервис для проксирования запросов до подов postgresql)
 ```
 apiVersion: v1
 kind: Service
@@ -174,7 +182,7 @@ spec:
       port: 5432
       targetPort: 5432 
 ```	  
-**12. Проверим статус кластера minikub** при помощи команды:
+**13. Проверим статус кластера minikub** при помощи команды:
 ```
 minikube status
 ```
@@ -189,29 +197,29 @@ kubeconfig: Configured
 ```
 Если кластер остановлен, то запустим его командой `minikube start`
 
-**13. Проверим, что мы подключены к нужному кластеру** при помощи команды
+**14. Проверим, что мы подключены к нужному кластеру** при помощи команды
 ```
 kubectl config get-contexts
 ```
-**14. Активируем и создадим ресурсы ingress-controller**
+**15. Активируем и создадим ресурсы ingress-controller**
 ```
 minikube addons enable ingress
 ```
-**15. Установим все необходимые ресурсы и сервисы**
+**16. Установим все необходимые ресурсы и сервисы**
 ```
 kubectl apply -f ./k8s_manifests
 ```
-**16. Добавим доменное имя**
+**17. Добавим доменное имя**
 
 Для того, чтобы dns имя было связано с нужным ip адресом необходимо прописать в файле `/etc/hosts` следующее:
-``` bash
+``` 
 <IP адрес развернутого minikube> zouzoublique.example.com
 ```
 IP адрес развернутого minikube можно узнать, прописав команду в терминале
 ```
 minikube ip
 ```
-**17. Проверим работоспособность сервиса**
+**18. Проверим работоспособность сервиса**
 
 - Убедимся, что сервис доступен
 ```
@@ -221,7 +229,6 @@ curl -X GET http://zouzoublique.example.com/healthz
 ```
 curl -X GET http://zouzoublique.example.com/v1/zouzoubliques
 ```
-. POST /v1/zouzoubliques 
 
 - Убедимся, что мы можем добавить зюзюблика
 ```
