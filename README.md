@@ -17,7 +17,7 @@ mkdir k8s_manifest
 ```
 cd mkdir k8s_manifest
 ```
-**4. Создаем файл configmap-postgresql.yaml (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)**
+**4. Создаем файл configmap-postgresql.yaml** (Конфигмапа, нужная для PostgreSQL с данными для созданной БД)
 ```
 apiVersion: v1
 kind: ConfigMap
