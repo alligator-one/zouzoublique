@@ -188,6 +188,7 @@ apiserver: Running
 kubeconfig: Configured
 ```
 Если кластер остановлен, то запустим его командой `minikube start`
+
 **12. Проверим, что мы подключены к нужному кластеру** при помощи команды
 ```
 kubectl config get-contexts
@@ -212,7 +213,7 @@ minikube ip
 ```
 **16. Проверим работоспособность сервиса**
 
-- Убедимся, что сервис доступен**
+- Убедимся, что сервис доступен
 ```
 curl -X GET http://zouzoublique.example.com/healthz
 ```
