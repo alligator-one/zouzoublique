@@ -201,6 +201,12 @@ kubeconfig: Configured
 ```
 kubectl config get-contexts
 ```
+при необходимости необходимо переключить контекст
+
+```
+kubectl config use-context minikube
+```
+
 **15. Активируем и создадим ресурсы ingress-controller**
 ```
 minikube addons enable ingress
